@@ -1,0 +1,78 @@
+body {
+    background-color:black;
+    margin:0;
+    padding:0;
+}
+
+#analyser_render{
+    background-size: contain;
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    width:100vw;
+    height:100vh;
+    z-index: -1;
+    pointer-events: none;
+}
+
+#controlBar {
+    background-color: rgb(46, 46, 46);
+    width: 100vw;
+    margin:0;
+    padding: 10px 0px ;
+}
+
+#vol, #playlist, #nowPlaying, #options_bar button {
+    height:30px;
+    float:left;
+    margin-left: 3%;
+    font-weight: 900;
+}
+
+#vol {
+    width:100px;
+}
+
+#playlist {
+    max-width: 300px;
+    min-width: 250px;
+    float: left;
+}
+
+#nowPlaying {
+    min-width: 200px;
+    max-width: 300px;
+    width:30vw;
+    background-color: rgb(27, 27, 27);
+    line-height: 1.5em;
+    color:white;
+    text-align:center;
+    vertical-align: middle;
+}
+
+
+#options_bar {
+    display: inline-block;
+    width: 400px;
+    height: 30px;
+    z-index: 10;
+    margin-left: 5%;
+}
+
+#options_bar button {
+    margin-left: 1%;
+    width: 80px;
+}
+
+.option {
+    cursor: pointer;
+    background-color: rgb(24, 24, 24);
+    color: white;
+    font-size: 1.0em;
+}
+
+option {
+    font-size: 1.2em;
+}

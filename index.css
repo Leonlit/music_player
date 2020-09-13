@@ -32,7 +32,10 @@ body {
 }
 
 #vol {
-    width:100px;
+    max-width: 250px;
+    min-width: 100px;
+    -webkit-appearance: none;
+    background-color: transparent;
 }
 
 #playlist {
@@ -46,24 +49,45 @@ body {
     max-width: 300px;
     width:30vw;
     background-color: rgb(27, 27, 27);
-    line-height: 1.5em;
+    line-height: 2.0em;
+    overflow: hidden;
     color:white;
     text-align:center;
     vertical-align: middle;
+    border:2px solid rgba(255, 255, 255, 0.596);
 }
 
+#songNow {
+    -moz-animation: marquee 15s linear infinite;
+    -webkit-animation: marquee 15s linear infinite;
+    animation: marquee 15s linear infinite;
+}
 
 #options_bar {
     display: inline-block;
-    width: 400px;
+    width: 380px;
     height: 30px;
     z-index: 10;
-    margin-left: 5%;
+    margin-left: 3%;
 }
 
 #options_bar button {
     margin-left: 1%;
     width: 80px;
+    border-radius: 5px;
+    border:none;
+    transition: 0.3s;
+    padding-bottom:5px;
+    border: 3px solid transparent;
+}
+
+#options_bar button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+#options_bar button:hover {
+    border-left: 3px solid white;
 }
 
 .option {
@@ -75,4 +99,57 @@ body {
 
 option {
     font-size: 1.2em;
+}
+
+#vol:focus {
+    outline: none;
+}
+
+#vol::-webkit-slider-runnable-track {
+    height: 10px;
+    cursor: pointer;
+    background: #7F8182;
+    border-radius: 5px;
+    border: 1px solid #FFFFFF;
+}
+#vol::-webkit-slider-thumb {
+    height: 25px;
+    width: 15px;
+    border-radius: 3px;
+    background: #FFFFFF;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -8.5px;
+}
+#vol:focus::-webkit-slider-runnable-track {
+    background: #7F8182;
+}
+
+@-moz-keyframes marquee {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+}
+@-webkit-keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+@keyframes marquee {
+    0% {
+        -moz-transform: translateX(100%);
+        -webkit-transform: translateX(100%);
+        transform: translateX(100%)
+    }
+    100% {
+        -moz-transform: translateX(-100%);
+        -webkit-transform: translateX(-100%);
+        transform: translateX(-100%);
+    }
 }

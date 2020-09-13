@@ -8,19 +8,20 @@
   <body>
     <canvas id="analyser_render"></canvas>
     <div id="controlBar">
-      <div id="nowPlaying"></div>
+      <div id="nowPlaying"><div id="songNow"></div></div>
       <select onchange="playFromList()" class="option" id="playlist">
         <option disabled>Play List</option>
       </select>
-      <input type="range" id="vol" class ="option"max="1" min="0" step="0.01" onchange="changeVolume(this.value)" />
+      <input type="range" id="vol" class ="option"max="1" min="0" step="0.01" onchange="changeVolume(this.value)" oninput="changeVolume(this.value)"/>
       <div id="options_bar">
         <button onclick="backSong()" class="option">Prev</button>
         <button onclick="start()" class="option" id="play">Play</button>
-        <button onclick="skipSong()" class="option">Skip</button>
+        <button onclick="skipSong()" class="option">Next</button>
         <button onclick="restartSong()" class="option">Restart</button>
       </div>
     </div>
   </body>
 </html>
 
+<script type="text/javascript" src="utilities.js"></script>
 <script type="text/javascript" src="index.js"></script>

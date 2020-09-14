@@ -12,7 +12,7 @@
       <select onchange="playFromList()" class="option" id="playlist">
         <option disabled>Play List</option>
       </select>
-      <input type="range" id="vol" class ="option"max="1" min="0" step="0.01" onchange="changeVolume(this.value)" oninput="changeVolume(this.value)"/>
+      <input type="range" id="vol" class ="option" max="1" value="1" min="0" step="0.01" onchange="changeVolume(this.value)" oninput="changeVolume(this.value)"/>
       <div id="options_bar">
         <button onclick="backSong()" class="option">Prev</button>
         <button onclick="start()" class="option" id="play">Play</button>
@@ -20,6 +20,7 @@
         <button onclick="restartSong()" class="option">Restart</button>
       </div>
     </div>
+    <input type="range" id="currDuration" min="0.0" value="0.0" readonly>
   </body>
 </html>
 

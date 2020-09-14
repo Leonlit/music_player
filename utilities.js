@@ -14,10 +14,10 @@ function generateList () {
 }
 
 async function getSongs () {
-	return new Promise ((resolve, reject)=> {
+	const result = await
 		fetch("./songs_name.txt")
-			.then(data=>resolve(data.text()))
-	});
+			.then(data=>data.text());
+	return result;
 }
 
 function focusList (from, to) {
@@ -35,9 +35,13 @@ const freqColor = (frequency) => `hsl(${frequency/canvasHeight * 255 * 2 + 100},
 
 const changeVolume = (amount) => audio.volume = round(amount, 1);
 
-function changeCurrentTitle (index) {
-	//option[currSong].setAttribute("selected", true);
-	songNow.innerHTML = `Now Playing ---> ${songArr[index].replace(".mp3", "")}`;
+function changeCurrentTitle (index, paused=false) {
+	const filename = songArr[index].replace(".mp3", "");
+	if (!paused) {
+		songNow.innerHTML = `Now Playing ---> ${filename}`;
+	}else {
+		songNow.innerHTML = `Paused ---> ${filename}`;
+	}
 }
 
 function round(value, precision) {
@@ -48,4 +52,17 @@ function round(value, precision) {
 function resize () {
 	canvas.width = canvas.clientWidth * window.devicePixelRatio;
 	canvas.height = canvas.clientHeight * window.devicePixelRatio;
+}
+
+function setSongTime (time) {
+	audio.currentTime = time;
+}
+
+function followSongTime () {
+	const newValue = audio.currentTime / audio.duration * timerWidth ;
+	songTimerRange.value = newValue;
+}
+
+function customizeSongRange () {
+	songTimerRange.setAttribute("max", `${timerWidth}`);
 }

@@ -1,23 +1,20 @@
 let bufferLength, source, context, analyser, fArray;
 let canvasHeight, canvasWidth, canvas, ctx;
 let bars, bar_x, bar_width, wait = false;
-var playBtn, playList, nowPlaying, options, songNow;
+var playBtn, playList, nowPlaying, options, songNow, songTimerRange, timerWidth;
 
 //sample songs [use your own songs]
 let songArr = [];
 
-//getting the list of songs available
-getSongs().then(arr=>{
-	songArr = arr.split(",");
-});
-
-let audio = new Audio();
+var audio = new Audio();
 let currSong = 0;
 
-window.onload = () => {
+window.onload = async function () {
+	const arr = await getSongs();
+	songArr = arr.split(",");
 	setTimeout(() => {
 		initiate();
-	}, 1000);
+	}, 100);
 }
 
 function initiate() {
@@ -27,6 +24,8 @@ function initiate() {
 	nowPlaying = document.getElementById("nowPlaying");
 	options = playList.getElementsByTagName("option");
 	songNow = document.getElementById("songNow");
+	songTimerRange = document.getElementById("currDuration");
+	timerWidth = songTimerRange.offsetWidth;
 	generateList();
 }
 
@@ -58,10 +57,12 @@ function start () {
 			nextSong();
 			playSong();
 		});
-
-		changeCurrentTitle(currSong);
-		audio.play();
-		frameLooper();
+		setTimeout(() => {
+			changeCurrentTitle(currSong);
+			audio.play();
+			customizeSongRange(audio.duration);
+			frameLooper();
+		}, 100);
 	}
 }
 
@@ -74,13 +75,15 @@ function playSong () {
 		playBtn.onclick = pauseSong;
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 		window.cancelAnimationFrame(frameLooper)
+		window.cancelAnimationFrame(followSongTime);
 		audio.src = `songs/${songArr[currSong]}`;
 		audio.play();
+		customizeSongRange(audio.duration);
 		frameLooper();
 	}
 }
 
-const restartSong = () => audio.currentTime = 0;
+const restartSong = () => setSongTime(0);
 
 function nextSong () {
 	focusList(currSong, currSong + 1)
@@ -101,6 +104,7 @@ function prevSong () {
 const pauseSong = () => {
 	if (!wait) {
 		audio.pause();
+		changeCurrentTitle(currSong, true);
 		playBtn.innerHTML = "Resume";
 		playBtn.onclick = resumeSong;
 	}
@@ -108,6 +112,7 @@ const pauseSong = () => {
 const resumeSong = () => {
 	if (!wait) {
 		audio.play();
+		changeCurrentTitle(currSong);
 		playBtn.innerHTML = "Pause";
 		playBtn.onclick = pauseSong;
 	}
@@ -149,7 +154,6 @@ function playFromList () {
 function frameLooper(){
 	analyser.getByteFrequencyData(fArray);
 	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
 	fArray.forEach((feq, index) => {
 		bar_x = index * bar_width;
 		const bar_height = feq/ 255 * canvasHeight/2 * 1.2;
@@ -157,4 +161,5 @@ function frameLooper(){
 		ctx.fillRect(bar_x, canvasHeight - bar_height, bar_width, bar_height);
 	});
   window.requestAnimationFrame(frameLooper);
+  window.requestAnimationFrame(followSongTime);
 }

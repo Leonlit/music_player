@@ -2,6 +2,8 @@ body {
     background-color:black;
     margin:0;
     padding:0;
+    background-image: url("image/bg.jpg");
+    background-size: cover;
 }
 
 #analyser_render{
@@ -34,6 +36,9 @@ body {
 #vol {
     max-width: 250px;
     min-width: 100px;
+}
+
+input[type="range"] {
     -webkit-appearance: none;
     background-color: transparent;
 }
@@ -101,18 +106,29 @@ option {
     font-size: 1.2em;
 }
 
-#vol:focus {
+#currDuration {
+    margin-top:-5px;
+    width:100vw;
+    margin: 0;
+    height:20px;
+}
+
+#currDuration::-webkit-slider-thumb {
+    height:15px;
+    margin-top: -3px;
+}
+
+input[type="range"]:focus {
     outline: none;
 }
 
-#vol::-webkit-slider-runnable-track {
+input[type="range"]::-webkit-slider-runnable-track {
     height: 10px;
     cursor: pointer;
     background: #7F8182;
     border-radius: 5px;
-    border: 1px solid #FFFFFF;
 }
-#vol::-webkit-slider-thumb {
+input[type="range"]::-webkit-slider-thumb {
     height: 25px;
     width: 15px;
     border-radius: 3px;
@@ -121,7 +137,8 @@ option {
     -webkit-appearance: none;
     margin-top: -8.5px;
 }
-#vol:focus::-webkit-slider-runnable-track {
+
+input[type="range"]:focus::-webkit-slider-runnable-track {
     background: #7F8182;
 }
 

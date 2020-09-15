@@ -9,70 +9,74 @@ let songArr = [];
 var audio = new Audio();
 let currSong = 0;
 
+//on startup, initialise the DOM object variable
 window.onload = async function () {
-	const arr = await getSongs();
-	songArr = arr.split(",");
-	setTimeout(() => {
-		initiate();
-	}, 100);
-}
-
-function initiate() {
-	wait = true;
-	playBtn = document.getElementById("play"),
-	playList = document.getElementById("playlist");
-	nowPlaying = document.getElementById("nowPlaying");
-	options = playList.getElementsByTagName("option");
-	songNow = document.getElementById("songNow");
-	songTimerRange = document.getElementById("currDuration");
-	timerWidth = songTimerRange.offsetWidth;
+	const arr = await getSongs();								//getting the String containing the sosngs from the function getsongs
+	songArr = arr.split(",");									//Splitting the values while using comma as the delimiter
+	wait = true;												//make sure the user didn't clicked too fast before the initialisation
+	playBtn = document.getElementById("play"),					//The play button
+	playList = document.getElementById("playlist");				//the playlist container
+	nowPlaying = document.getElementById("nowPlaying");			//the now playing container
+	options = playList.getElementsByTagName("option");			//The options tag inside the playlist container
+	songNow = document.getElementById("songNow");				//the song name container (the one that keeps on floating to the left)
+	songTimerRange = document.getElementById("currDuration");	//The input type range for the current time of the song (Following the range width)
+	timerWidth = songTimerRange.offsetWidth;					//getting the width of the songTimerRange element
 	generateList();
+	
 }
 
+//when the play button is clicked
 function start () {
+	//if the current status is not waiting
 	if (!wait) {
+		//changing the play button text to pause as well as changing the function
+		//to be triggered to trigger pauseSong on the next button click
 		playBtn.innerHTML = "Pause";
 		playBtn.onclick = pauseSong;
 
+		//specifying the source for the audio element
 		audio.src = `songs/${songArr[currSong]}`;
-		audio.autoplay = true;
 
-		context = new (window.AudioContext || window.webkitAudioContext)();
-		analyser = context.createAnalyser();
-		analyser.fftSize = 1024;
-		source = context.createMediaElementSource(audio);
-		source.connect(analyser);
-		analyser.connect(context.destination);
-		bufferLength = analyser.frequencyBinCount;
-		fArray = new Uint8Array(bufferLength);
+	
+		context = new (window.AudioContext || window.webkitAudioContext)();		//creating an audio context 
+		analyser = context.createAnalyser();									//creating a analyzer for the context
+		analyser.fftSize = 1024;												//setting the window size in samples
+		source = context.createMediaElementSource(audio);						//creating a new MediaElementAudioSourceNode using our audio object
+		source.connect(analyser);												//using the node source we created just now, conect it with the analyzer
+		analyser.connect(context.destination);									//Then connect the analyzer with the context's destination
+		bufferLength = analyser.frequencyBinCount;								//getting the number of values that the program need to draw out
+		fArray = new Uint8Array(bufferLength);									//representing the array as a unsigned 8-bit integers
 
-		canvas = document.getElementById("analyser_render");
-		ctx = canvas.getContext('2d');
-		resize();
-		canvasHeight = canvas.height;
+		canvas = document.getElementById("analyser_render");					//getting the canvas
+		ctx = canvas.getContext('2d');											//getting the canvas context
+		resize();																//resizing the canvas to properly size the drawing location
+		canvasHeight = canvas.height;							
 		canvasWidth = canvas.width;
 		bar_width = canvasWidth / bufferLength * 1.2;
 
+		//when a song is finished, go to the next song
 		audio.addEventListener("ended", function(){
 			nextSong();
 			playSong();
 		});
-		setTimeout(() => {
-			changeCurrentTitle(currSong);
-			audio.play();
-			customizeSongRange(audio.duration);
-			frameLooper();
-		}, 100);
+		
+		changeCurrentTitle(currSong);											//change the title at the currently playing container
+		audio.play();															//play out the song
+		customizeSongRange(audio.duration);										//setting the max value for the range of the song
+		frameLooper();															//start the animation frame (looping)
 	}
 }
 
+
+//function for playing a song
 function playSong () {
 	wait = false;
+	//if the source is empty call the start function (the system has not yet initialize some important values)
 	if (audio.src === "") {
 		start();
 	}else{
-		playBtn.innerHTML = "Pause";
-		playBtn.onclick = pauseSong;
+		playBtn.innerHTML = "Pause";						//changing the stop text button into a pause text button
+		playBtn.onclick = pauseSong;						//pause the song
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 		window.cancelAnimationFrame(frameLooper)
 		window.cancelAnimationFrame(followSongTime);

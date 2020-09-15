@@ -1,0 +1,30 @@
+{
+  "name": "music_player",
+  "version": "1.0.0",
+  "description": "A simple music player + music visualizer",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "get-files": "node ./getFiles.js",
+    "start": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leonlit/music_player.git"
+  },
+  "keywords": [
+    "Javascript",
+    "HTML",
+    "CSS",
+    "music-player",
+    "music-visualizer"
+  ],
+  "author": "leonlit <leonlit123@gmail.com> (https://github.com/Leonlit)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Leonlit/music_player/issues"
+  },
+  "homepage": "https://github.com/Leonlit/music_player#readme",
+  "dependencies": {
+    "lite-server": "^2.5.4"
+  }
+}

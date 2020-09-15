@@ -1,7 +1,8 @@
 const fs = require("fs");
 const dir = "./songs/";
-const folder = "./songs_name.txt";
+const file = "./songs_name.txt";
 
+//get all the filenames from the songs directoy
 fs.readdir(dir, (err, files)=> {
     if (err) throw err;
     else {
@@ -9,12 +10,12 @@ fs.readdir(dir, (err, files)=> {
     }
 })
 
+//saving all the names (separated by a comma) into the songs_name.txt file
 function saveFilesName(files) {
-    console.log(typeof files);
-    fs.writeFile(folder, files, (err)=>{
+    fs.writeFile(file, files, (err)=>{
         if (err) throw err;
         else {
-            console.log(`Saved songs name into the ${folder} folder.`);
+            console.log(`Saved songs name into the ${file} folder.`);
         }
     });
 }

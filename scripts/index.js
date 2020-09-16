@@ -12,9 +12,10 @@ let currSong = 0;
 //on startup, initialise the DOM object variable
 window.onload = async function () {
 	const arr = await getSongs();								//getting the String containing the sosngs from the function getsongs
-	songArr = arr.split(",");									//Splitting the values while using comma as the delimiter
+	songArr.push(...arr.split(","));									//Splitting the values while using comma as the delimiter
 	wait = true;												//make sure the user didn't clicked too fast before the initialisation
 	playBtn = document.getElementById("play"),					//The play button
+	playBtnText = playBtn.getElementsByTagName("i")[0],
 	playList = document.getElementById("playlist");				//the playlist container
 	nowPlaying = document.getElementById("nowPlaying");			//the now playing container
 	options = playList.getElementsByTagName("option");			//The options tag inside the playlist container
@@ -31,7 +32,7 @@ function start () {
 	if (!wait) {
 		//changing the play button text to pause as well as changing the function
 		//to be triggered to trigger pauseSong on the next button click
-		playBtn.innerHTML = "Pause";
+		playBtnText.innerHTML = "&#xf04c;";
 		playBtn.onclick = pauseSong;
 
 		//specifying the source for the audio element
@@ -75,7 +76,7 @@ function playSong () {
 	if (audio.src === "") {
 		start();
 	}else{
-		playBtn.innerHTML = "Pause";						//changing the stop text button into a pause text button
+		playBtnText.innerHTML = "&#xf04c;";						//changing the stop text button into a pause text button
 		playBtn.onclick = pauseSong;						//pause the song
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 		window.cancelAnimationFrame(frameLooper)
@@ -109,7 +110,7 @@ const pauseSong = () => {
 	if (!wait) {
 		audio.pause();
 		changeCurrentTitle(currSong, true);
-		playBtn.innerHTML = "Resume";
+		playBtnText.innerHTML = "&#xf04b;";
 		playBtn.onclick = resumeSong;
 	}
 }
@@ -117,7 +118,7 @@ const resumeSong = () => {
 	if (!wait) {
 		audio.play();
 		changeCurrentTitle(currSong);
-		playBtn.innerHTML = "Pause";
+		playBtnText.innerHTML = "&#xf04c;";
 		playBtn.onclick = pauseSong;
 	}
 }
@@ -166,4 +167,14 @@ function frameLooper(){
 	});
   window.requestAnimationFrame(frameLooper);
   window.requestAnimationFrame(followSongTime);
+}
+
+function showMore () {
+	
+}
+
+function playFromUrl () {
+	const fromUrl = document.getElementById("fromUrl").value;
+	console.log(fromUrl);
+	audio.src=fromUrl;
 }

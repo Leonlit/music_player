@@ -2,8 +2,11 @@ body {
     background-color:black;
     margin:0;
     padding:0;
-    background-image: url("image/bg.jpg");
-    background-size: cover;
+    width:100vw;
+    height:100vh;
+    background: rgb(44,71,103);
+    background: radial-gradient(circle, rgba(44,71,103,1) 1%, rgba(46,46,112,1) 11%, 
+                rgba(61,61,150,1) 16%, rgba(41,41,99,1) 24%, rgba(19,18,37,1) 69%);
 }
 
 #analyser_render{
@@ -19,28 +22,29 @@ body {
     pointer-events: none;
 }
 
+.websiteBlackTheme {
+    background-color: rgb(72, 72, 72);
+    color: white;
+}
+
 #controlBar {
-    background-color: rgb(46, 46, 46);
     width: 100vw;
     margin:0;
     padding: 10px 0px ;
+    background-color: rgb(46, 46, 46);
 }
 
 #vol, #playlist, #nowPlaying, #options_bar button {
     height:30px;
     float:left;
+    border-radius: 5px;
     margin-left: 3%;
     font-weight: 900;
 }
 
 #vol {
     max-width: 250px;
-    min-width: 100px;
-}
-
-input[type="range"] {
-    -webkit-appearance: none;
-    background-color: transparent;
+    min-width: 150px;
 }
 
 #playlist {
@@ -53,10 +57,8 @@ input[type="range"] {
     min-width: 200px;
     max-width: 300px;
     width:30vw;
-    background-color: rgb(27, 27, 27);
     line-height: 2.0em;
     overflow: hidden;
-    color:white;
     text-align:center;
     vertical-align: middle;
     border:2px solid rgba(255, 255, 255, 0.596);
@@ -70,16 +72,15 @@ input[type="range"] {
 
 #options_bar {
     display: inline-block;
-    width: 380px;
+    width: 360px;
     height: 30px;
     z-index: 10;
     margin-left: 3%;
 }
 
 #options_bar button {
-    margin-left: 1%;
-    width: 80px;
-    border-radius: 5px;
+    margin-left: 1px;
+    width: 50px;
     border:none;
     transition: 0.3s;
     padding-bottom:5px;
@@ -97,8 +98,6 @@ input[type="range"] {
 
 .option {
     cursor: pointer;
-    background-color: rgb(24, 24, 24);
-    color: white;
     font-size: 1.0em;
 }
 
@@ -113,60 +112,45 @@ option {
     height:20px;
 }
 
+#showMoreContainer {
+    position: absolute;
+    margin-top: 10px;
+    right:5%;
+    font-size: 0.9em;
+    color:white;
+}
+
+#showMoreContainer div {
+    background-color: rgb(46, 46, 46);
+    border-radius: 5px;
+    padding: 3px;
+}
+
+#showMoreContainer div .fa {
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+#showMoreContainer::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 90%;
+    margin-left: -5px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent white transparent;
+}
+
+.showMoreInputs {
+    border:none;
+    width:30vw;
+    height: 30px;
+    padding-left: 10px;
+    font-weight: 900;
+}
+
 #currDuration::-webkit-slider-thumb {
     height:15px;
     margin-top: -3px;
-}
-
-input[type="range"]:focus {
-    outline: none;
-}
-
-input[type="range"]::-webkit-slider-runnable-track {
-    height: 10px;
-    cursor: pointer;
-    background: #7F8182;
-    border-radius: 5px;
-}
-input[type="range"]::-webkit-slider-thumb {
-    height: 25px;
-    width: 15px;
-    border-radius: 3px;
-    background: #FFFFFF;
-    cursor: pointer;
-    -webkit-appearance: none;
-    margin-top: -8.5px;
-}
-
-input[type="range"]:focus::-webkit-slider-runnable-track {
-    background: #7F8182;
-}
-
-@-moz-keyframes marquee {
-    0% {
-      transform: translateX(100%);
-    }
-    100% {
-      transform: translateX(-100%);
-    }
-}
-@-webkit-keyframes marquee {
-    0% {
-        transform: translateX(100%);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
-}
-@keyframes marquee {
-    0% {
-        -moz-transform: translateX(100%);
-        -webkit-transform: translateX(100%);
-        transform: translateX(100%)
-    }
-    100% {
-        -moz-transform: translateX(-100%);
-        -webkit-transform: translateX(-100%);
-        transform: translateX(-100%);
-    }
 }

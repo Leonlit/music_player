@@ -1,0 +1,25 @@
+
+@-moz-keyframes marquee {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+}
+@-webkit-keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+@keyframes marquee {
+    0% {
+        transform: translateX(100%)
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}

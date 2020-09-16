@@ -2,27 +2,39 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="index.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="css/desktop.css"/>
+    <link rel="stylesheet" href="css/custom.css"/>
+    <link rel="stylesheet" href="css/animations.css"/>
     <title>Audio equalizer - volume bar</title>
   </head>
   <body>
     <canvas id="analyser_render"></canvas>
     <div id="controlBar">
-      <div id="nowPlaying"><div id="songNow"></div></div>
-      <select onchange="playFromList()" class="option" id="playlist">
+      <div id="nowPlaying" class="websiteBlackTheme"><div id="songNow"></div></div>
+      <select onchange="playFromList()" class="option websiteBlackTheme" id="playlist">
         <option disabled>Play List</option>
       </select>
       <input type="range" id="vol" class ="option" max="1" value="1" min="0" step="0.01" onchange="changeVolume(this.value)" oninput="changeVolume(this.value)"/>
       <div id="options_bar">
-        <button onclick="backSong()" class="option">Prev</button>
-        <button onclick="start()" class="option" id="play">Play</button>
-        <button onclick="skipSong()" class="option">Next</button>
-        <button onclick="restartSong()" class="option">Restart</button>
+        <button onclick="backSong()" class="option websiteBlackTheme"><i class="fa">&#xf04a;</i></button>
+        <button onclick="setSongTime(audio.currentTime - 10)" class="option websiteBlackTheme"><i class="fa">&#xf048;</i></button>
+        <button id="play" onclick="start()" class="option websiteBlackTheme"><i class="fa">&#xf04b;</i></button>
+        <button onclick="setSongTime(audio.currentTime + 10)" class="option websiteBlackTheme"><i class="fa">&#xf051;</i></button>
+        <button onclick="skipSong()" class="option websiteBlackTheme"><i class="fa">&#xf04e;</i></button>
+        <button onclick="restartSong()" class="option websiteBlackTheme"><i class="fa">&#xf021;</i></button>
+        <button onclick="showMore()" class="option websiteBlackTheme"><i class="fa">&#xf150;</i></button>
+      </div>
+    </div>
+    <div id="showMoreContainer">
+      <div>
+        <input type="text" id="fromUrl" class="showMoreInputs websiteBlackTheme" placeholder="Play from URL"/>
+        <i class="fa" onclick="playFromUrl">&#xf061;</i>
       </div>
     </div>
     <input type="range" id="currDuration" min="0.0" value="0.0" readonly>
   </body>
 </html>
 
-<script type="text/javascript" src="utilities.js"></script>
-<script type="text/javascript" src="index.js"></script>
+<script type="text/javascript" src="scripts/index.js"></script>
+<script type="text/javascript" src="scripts/utilities.js"></script>

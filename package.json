@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "get-files": "node ./getFiles.js",
-    "start": "lite-server"
+    "start": "npm run lite",
+    "lite" : "lite-server"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,8 @@
     "url": "https://github.com/Leonlit/music_player/issues"
   },
   "homepage": "https://github.com/Leonlit/music_player#readme",
-  "dependencies": {
+  "devDependencies": {
     "lite-server": "^2.5.4"
-  }
+  },
+  "dependencies": {}
 }

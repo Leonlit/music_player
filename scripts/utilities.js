@@ -35,13 +35,31 @@ const freqColor = (frequency) => `hsl(${frequency/canvasHeight * 255 * 2 + 100},
 
 const changeVolume = (amount) => audio.volume = round(amount, 1);
 
-function changeCurrentTitle (index, paused=false) {
-	const filename = songArr[index].replace(".mp3", "");
+function changeCurrentTitle (index=null, paused=false) {
+	let filename;
+	if (!onlineSongs) {
+		filename = songArr[index].replace(".mp3", "");
+	}else {
+		filename = getTitle();
+	}
 	if (!paused) {
 		songNow.innerHTML = `Now Playing ---> ${filename}`;
 	}else {
 		songNow.innerHTML = `Paused ---> ${filename}`;
 	}
+}
+
+function getTitle () {
+	const title = document.getElementById("songTitle").value;
+	console.log(title);
+	if (title == "") return "No Title";
+	return title;
+}
+
+function getUrl () {
+	const url = document.getElementById("fromUrl").value;
+	if (url == "") return null;
+	return url;
 }
 
 function round(value, precision) {
@@ -65,4 +83,8 @@ function followSongTime () {
 
 function customizeSongRange () {
 	songTimerRange.setAttribute("max", `${timerWidth}`);
+}
+
+function changeSource (newSource) {
+	audio.src= newSource;
 }

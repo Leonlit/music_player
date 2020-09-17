@@ -29,7 +29,10 @@
     <div id="showMoreContainer">
       <div>
         <input type="text" id="fromUrl" class="showMoreInputs websiteBlackTheme" placeholder="Play from URL"/>
-        <i class="fa" onclick="playFromUrl">&#xf061;</i>
+      </div>
+      <div>
+        <input type="text" class="showMoreInputs websiteBlackTheme" id="songTitle" placeholder="Song Title"/>
+        <i class="fa" onclick="playFromUrl()">&#xf061;</i>
       </div>
     </div>
     <input type="range" id="currDuration" min="0.0" value="0.0" readonly>

@@ -1,7 +1,8 @@
 let bufferLength, source, context, analyser, fArray;
 let canvasHeight, canvasWidth, canvas, ctx;
 let bars, bar_x, bar_width, wait = false;
-var playBtn, playList, nowPlaying, options, songNow, songTimerRange, timerWidth;
+var playBtn, playList, nowPlaying, options, songNow, 
+	songTimerRange, timerWidth, onlineSongs;
 
 //sample songs [use your own songs]
 let songArr = [];
@@ -27,17 +28,22 @@ window.onload = async function () {
 }
 
 //when the play button is clicked
-function start () {
+function start (url) {
 	//if the current status is not waiting
 	if (!wait) {
 		//changing the play button text to pause as well as changing the function
 		//to be triggered to trigger pauseSong on the next button click
 		playBtnText.innerHTML = "&#xf04c;";
 		playBtn.onclick = pauseSong;
-
+		let audioSource;
 		//specifying the source for the audio element
-		audio.src = `songs/${songArr[currSong]}`;
-
+		if (url === undefined) {
+			audioSource = `songs/${songArr[currSong]}`;
+		}else {
+			audioSource = url;
+		}
+		changeSource(audioSource);
+		audio.crossOrigin = "anonymous";
 	
 		context = new (window.AudioContext || window.webkitAudioContext)();		//creating an audio context 
 		analyser = context.createAnalyser();									//creating a analyzer for the context
@@ -53,10 +59,11 @@ function start () {
 		resize();																//resizing the canvas to properly size the drawing location
 		canvasHeight = canvas.height;							
 		canvasWidth = canvas.width;
-		bar_width = canvasWidth / bufferLength * 1.2;
+		bar_width = canvasWidth / bufferLength
 
 		//when a song is finished, go to the next song
 		audio.addEventListener("ended", function(){
+			onlineSongs = false;
 			nextSong();
 			playSong();
 		});
@@ -81,7 +88,7 @@ function playSong () {
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 		window.cancelAnimationFrame(frameLooper)
 		window.cancelAnimationFrame(followSongTime);
-		audio.src = `songs/${songArr[currSong]}`;
+		changeSource(`songs/${songArr[currSong]}`);
 		audio.play();
 		customizeSongRange(audio.duration);
 		frameLooper();
@@ -106,7 +113,7 @@ function prevSong () {
 	}
 }
 
-const pauseSong = () => {
+function pauseSong () {
 	if (!wait) {
 		audio.pause();
 		changeCurrentTitle(currSong, true);
@@ -114,10 +121,10 @@ const pauseSong = () => {
 		playBtn.onclick = resumeSong;
 	}
 }
-const resumeSong = () => {
+function resumeSong () {
 	if (!wait) {
 		audio.play();
-		changeCurrentTitle(currSong);
+		changeCurrentTitle(currSong, false);
 		playBtnText.innerHTML = "&#xf04c;";
 		playBtn.onclick = pauseSong;
 	}
@@ -174,7 +181,17 @@ function showMore () {
 }
 
 function playFromUrl () {
-	const fromUrl = document.getElementById("fromUrl").value;
-	console.log(fromUrl);
-	audio.src=fromUrl;
+	onlineSongs = true;
+	const url = getUrl();
+	if (audio.src === "") {
+		start(url);
+	}else if (url !== null){
+		pauseSong();
+		changeSource(url);
+		currSong -= 2;
+		changeCurrentTitle();
+		setTimeout(() => {
+			resumeSong();
+		}, 1500);
+	}
 }

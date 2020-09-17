@@ -51,6 +51,7 @@ body {
     max-width: 300px;
     min-width: 250px;
     float: left;
+    transition: 0.3s;
 }
 
 #nowPlaying {
@@ -118,6 +119,15 @@ option {
     right:5%;
     font-size: 0.9em;
     color:white;
+    visibility: hidden;
+}
+
+.openShowMore {
+    animation: fade-in-down 0.3s linear;
+}
+
+.closeShowMore {
+    animation: fade-out-up 0.3s linear;
 }
 
 #showMoreContainer div {

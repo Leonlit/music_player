@@ -17,22 +17,22 @@
       </select>
       <input type="range" id="vol" class ="option" max="1" value="1" min="0" step="0.01" onchange="changeVolume(this.value)" oninput="changeVolume(this.value)"/>
       <div id="options_bar">
-        <button onclick="backSong()" class="option websiteBlackTheme"><i class="fa">&#xf04a;</i></button>
-        <button onclick="setSongTime(audio.currentTime - 10)" class="option websiteBlackTheme"><i class="fa">&#xf048;</i></button>
+        <button title="Skip backward" onclick="backSong()" class="option websiteBlackTheme"><i class="fa">&#xf04a;</i></button>
+        <button title="Step backward" onclick="setSongTime(audio.currentTime - 10)" class="option websiteBlackTheme"><i class="fa">&#xf048;</i></button>
         <button id="play" onclick="start()" class="option websiteBlackTheme"><i class="fa">&#xf04b;</i></button>
-        <button onclick="setSongTime(audio.currentTime + 10)" class="option websiteBlackTheme"><i class="fa">&#xf051;</i></button>
-        <button onclick="skipSong()" class="option websiteBlackTheme"><i class="fa">&#xf04e;</i></button>
-        <button onclick="restartSong()" class="option websiteBlackTheme"><i class="fa">&#xf021;</i></button>
-        <button onclick="showMore()" class="option websiteBlackTheme"><i class="fa">&#xf150;</i></button>
+        <button title="Step forward" onclick="setSongTime(audio.currentTime + 10)" class="option websiteBlackTheme"><i class="fa">&#xf051;</i></button>
+        <button title="Skip forward" onclick="skipSong()" class="option websiteBlackTheme"><i class="fa">&#xf04e;</i></button>
+        <button title="Restart song" onclick="restartSong()" class="option websiteBlackTheme"><i class="fa">&#xf021;</i></button>
+        <button title="More options" onclick="showMore()" class="option websiteBlackTheme" id="showMore"><i class="fa">&#xf191;</i></button>
       </div>
     </div>
-    <div id="showMoreContainer">
+    <div id="showMoreContainer" class="closeShowMore">
       <div>
         <input type="text" id="fromUrl" class="showMoreInputs websiteBlackTheme" placeholder="Play from URL"/>
       </div>
       <div>
         <input type="text" class="showMoreInputs websiteBlackTheme" id="songTitle" placeholder="Song Title"/>
-        <i class="fa" onclick="playFromUrl()">&#xf061;</i>
+        <i title="Play From url" class="fa" onclick="playFromUrl()">&#xf061;</i>
       </div>
     </div>
     <input type="range" id="currDuration" min="0.0" value="0.0" readonly>
@@ -41,3 +41,4 @@
 
 <script type="text/javascript" src="scripts/index.js"></script>
 <script type="text/javascript" src="scripts/utilities.js"></script>
+<script type="text/javascript" src="scripts/animations.js"></script>

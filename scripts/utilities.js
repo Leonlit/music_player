@@ -15,7 +15,7 @@ function generateList () {
 
 async function getSongs () {
 	const result = await
-		fetch("./songs_name.txt")
+		fetch("./sample_song.txt")
 			.then(data=>data.text());
 	return result;
 }

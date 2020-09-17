@@ -13,7 +13,7 @@ let currSong = 0;
 //on startup, initialise the DOM object variable
 window.onload = async function () {
 	const arr = await getSongs();								//getting the String containing the sosngs from the function getsongs
-	songArr.push(...arr.split(","));									//Splitting the values while using comma as the delimiter
+	songArr.push(...arr.split(","));							//Splitting the values while using comma as the delimiter
 	wait = true;												//make sure the user didn't clicked too fast before the initialisation
 	playBtn = document.getElementById("play"),					//The play button
 	playBtnText = playBtn.getElementsByTagName("i")[0],
@@ -27,6 +27,14 @@ window.onload = async function () {
 	
 }
 
+function useFileSource (fromOnlineSource=null) {
+	if (fromOnlineSource) {
+		return `http://cors-anywhere.herokuapp.com/${songArr[currSong]}`;
+	}else {
+		return `songs/${songArr[currSong]}`
+	}
+}
+
 //when the play button is clicked
 function start (url) {
 	//if the current status is not waiting
@@ -38,7 +46,7 @@ function start (url) {
 		let audioSource;
 		//specifying the source for the audio element
 		if (url === undefined) {
-			audioSource = `songs/${songArr[currSong]}`;
+			audioSource = useFileSource(true);
 		}else {
 			audioSource = url;
 		}
@@ -88,7 +96,7 @@ function playSong () {
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 		window.cancelAnimationFrame(frameLooper)
 		window.cancelAnimationFrame(followSongTime);
-		changeSource(`songs/${songArr[currSong]}`);
+		changeSource(useFileSource(true));
 		audio.play();
 		customizeSongRange(audio.duration);
 		frameLooper();
@@ -172,12 +180,8 @@ function frameLooper(){
     	ctx.fillStyle = freqColor(bar_height)
 		ctx.fillRect(bar_x, canvasHeight - bar_height, bar_width, bar_height);
 	});
-  window.requestAnimationFrame(frameLooper);
-  window.requestAnimationFrame(followSongTime);
-}
-
-function showMore () {
-	
+	window.requestAnimationFrame(frameLooper);
+	window.requestAnimationFrame(followSongTime);
 }
 
 function playFromUrl () {
@@ -190,6 +194,7 @@ function playFromUrl () {
 		changeSource(url);
 		currSong -= 2;
 		changeCurrentTitle();
+		showMore();
 		setTimeout(() => {
 			resumeSong();
 		}, 1500);

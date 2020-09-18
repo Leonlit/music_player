@@ -11,11 +11,11 @@
   <body>
     <canvas id="analyser_render"></canvas>
     <div id="controlBar">
-      <div id="nowPlaying" class="websiteBlackTheme"><div id="songNow"></div></div>
-      <select onchange="playFromList()" class="option websiteBlackTheme" id="playlist">
+      <div title="Now Playing" id="nowPlaying" class="websiteBlackTheme"><div id="songNow"></div></div>
+      <select title="Playlist" onchange="playFromList()" class="option websiteBlackTheme" id="playlist">
         <option disabled>Play List</option>
       </select>
-      <input type="range" id="vol" class ="option" max="1" value="1" min="0" step="0.01" onchange="changeVolume(this.value)" oninput="changeVolume(this.value)"/>
+      <input title="Music volume" type="range" id="vol" class ="option" max="1" value="1" min="0" step="0.01" onchange="changeVolume(this.value)" oninput="changeVolume(this.value)"/>
       <div id="options_bar">
         <button title="Skip backward" onclick="backSong()" class="option websiteBlackTheme"><i class="fa">&#xf04a;</i></button>
         <button title="Step backward" onclick="setSongTime(audio.currentTime - 10)" class="option websiteBlackTheme"><i class="fa">&#xf048;</i></button>
@@ -24,6 +24,7 @@
         <button title="Skip forward" onclick="skipSong()" class="option websiteBlackTheme"><i class="fa">&#xf04e;</i></button>
         <button title="Restart song" onclick="restartSong()" class="option websiteBlackTheme"><i class="fa">&#xf021;</i></button>
         <button title="More options" onclick="showMore()" class="option websiteBlackTheme" id="showMore"><i class="fa">&#xf191;</i></button>
+        <button title="Change mode (local/online mp3 files)" onclick="changeMode()" class="option websiteBlackTheme" id="changeMode"><i class="fa">&#xf013;</i></button>
       </div>
     </div>
     <div id="showMoreContainer" class="closeShowMore">

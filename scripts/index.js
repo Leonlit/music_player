@@ -1,6 +1,6 @@
 let bufferLength, source, context, analyser, fArray;
 let canvasHeight, canvasWidth, canvas, ctx;
-let bars, bar_x, bar_width, wait = false;
+let bars, bar_x, bar_width, wait = false, onlineMode = false;
 var playBtn, playList, nowPlaying, options, songNow, 
 	songTimerRange, timerWidth, onlineSongs;
 
@@ -12,8 +12,7 @@ let currSong = 0;
 
 //on startup, initialise the DOM object variable
 window.onload = async function () {
-	const arr = await getSongs();								//getting the String containing the sosngs from the function getsongs
-	songArr.push(...arr.split(","));							//Splitting the values while using comma as the delimiter
+	getSongArr();
 	wait = true;												//make sure the user didn't clicked too fast before the initialisation
 	playBtn = document.getElementById("play"),					//The play button
 	playBtnText = playBtn.getElementsByTagName("i")[0],
@@ -23,13 +22,11 @@ window.onload = async function () {
 	songNow = document.getElementById("songNow");				//the song name container (the one that keeps on floating to the left)
 	songTimerRange = document.getElementById("currDuration");	//The input type range for the current time of the song (Following the range width)
 	timerWidth = songTimerRange.offsetWidth;					//getting the width of the songTimerRange element
-	generateList();
-	
 }
 
-function useFileSource (fromOnlineSource=null) {
-	if (fromOnlineSource) {
-		return `http://cors-anywhere.herokuapp.com/${songArr[currSong]}`;
+function useFileSource () {
+	if (onlineMode || onlineSongs) {
+		return `http://cors-anywhere.herokuapp.com/${songArr[currSong].link}`;
 	}else {
 		return `songs/${songArr[currSong]}`
 	}
@@ -46,7 +43,7 @@ function start (url) {
 		let audioSource;
 		//specifying the source for the audio element
 		if (url === undefined) {
-			audioSource = useFileSource(true);
+			audioSource = useFileSource();
 		}else {
 			audioSource = url;
 		}
@@ -92,11 +89,10 @@ function playSong () {
 		start();
 	}else{
 		playBtnText.innerHTML = "&#xf04c;";						//changing the stop text button into a pause text button
-		playBtn.onclick = pauseSong;						//pause the song
+		playBtn.onclick = pauseSong;					//pause the song
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 		window.cancelAnimationFrame(frameLooper)
-		window.cancelAnimationFrame(followSongTime);
-		changeSource(useFileSource(true));
+		changeSource(useFileSource());
 		audio.play();
 		customizeSongRange(audio.duration);
 		frameLooper();

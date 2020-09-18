@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "get-files": "node ./getFiles.js",
     "start": "npm run lite",
-    "lite" : "lite-server"
+    "lite": "lite-server"
   },
   "repository": {
     "type": "git",
@@ -28,5 +28,7 @@
   "devDependencies": {
     "lite-server": "^2.5.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "ffmetadata": "^1.6.0"
+  }
 }

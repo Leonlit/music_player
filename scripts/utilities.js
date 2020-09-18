@@ -1,7 +1,15 @@
 function generateList () {
+	const label = playList.getElementsByTagName("option")[0];
+	playList.innerHTML = "";
+	playList.appendChild(label);
 	songArr.forEach((element, index) => {
 		const option = document.createElement("option");
-		const text = document.createTextNode(element.split(".")[0]);
+		let text;
+		if (!onlineMode) {
+			text = document.createTextNode(element.split(".")[0]);
+		}else {
+			text = document.createTextNode(element.title);
+		}
 		option.appendChild(text);
 		option.setAttribute("value", index);
 		//option.setAttribute
@@ -13,10 +21,27 @@ function generateList () {
 	wait = false;
 }
 
+async function getSongArr () {
+	const arr = await getSongs();
+	if (!onlineMode) {				//getting the String containing the sosngs from the function getsongs
+		songArr = arr.split(",");	//Splitting the values while using comma as the delimiter
+	}else {
+		songArr = arr;
+	}
+	generateList();
+}
+
 async function getSongs () {
-	const result = await
-		fetch("./sample_song.txt")
+	let filename = "./songs_name.txt";
+	if (onlineMode) {
+		filename = "./sample_song.txt"
+	}
+	let result = await
+		fetch(filename)
 			.then(data=>data.text());
+	if (onlineMode) {
+		result = JSON.parse(result);
+	}
 	return result;
 }
 
@@ -37,7 +62,7 @@ const changeVolume = (amount) => audio.volume = round(amount, 1);
 
 function changeCurrentTitle (index=null, paused=false) {
 	let filename;
-	if (!onlineSongs) {
+	if (!onlineSongs && !onlineMode) {
 		filename = songArr[index].replace(".mp3", "");
 	}else {
 		filename = getTitle();
@@ -51,8 +76,14 @@ function changeCurrentTitle (index=null, paused=false) {
 
 function getTitle () {
 	const title = document.getElementById("songTitle").value;
-	console.log(title);
-	if (title == "") return "No Title";
+	if (title == "") {
+		if (songArr[currSong].title === undefined) {
+			return "No Title";
+		}else {
+			console.log(songArr[currSong].title);
+			return songArr[currSong].title;
+		}
+	}
 	return title;
 }
 
@@ -87,4 +118,19 @@ function customizeSongRange () {
 
 function changeSource (newSource) {
 	audio.src= newSource;
+}
+
+const modeIcon = document.getElementById("changeMode");
+async function changeMode () {
+	pauseSong();
+	if (onlineMode) {
+		modeIcon.style.color = "white";
+		onlineMode = false;
+	}else {
+		modeIcon.style.color = "yellow";
+		onlineMode = true;
+	}
+	await getSongArr();
+	changeCurrentTitle(currSong, false);
+	playSong();
 }

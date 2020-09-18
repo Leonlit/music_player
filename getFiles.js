@@ -1,5 +1,7 @@
 const fs = require("fs");
-const dir = "./songs/";
+const ffmetadata = require("ffmetadata");
+
+const dir = "songs/";
 const file = "./songs_name.txt";
 
 //get all the filenames from the songs directoy

@@ -23,12 +23,14 @@ function generateList () {
 
 async function getSongArr () {
 	const arr = await getSongs();
-	if (!onlineMode) {				//getting the String containing the sosngs from the function getsongs
-		songArr = arr.split(",");	//Splitting the values while using comma as the delimiter
-	}else {
-		songArr = arr;
+	if (arr !== null) {
+		if (!onlineMode) {				//getting the String containing the sosngs from the function getsongs
+			songArr = arr.split(",");	//Splitting the values while using comma as the delimiter
+		}else {
+			songArr = arr;
+		}
+		generateList();
 	}
-	generateList();
 }
 
 async function getSongs () {
@@ -39,6 +41,9 @@ async function getSongs () {
 	let result = await
 		fetch(filename)
 			.then(data=>data.text());
+	if (result == "") {
+		return null
+	}
 	if (onlineMode) {
 		result = JSON.parse(result);
 	}
@@ -56,7 +61,7 @@ function focusList (from, to) {
 	options[to + 1].selected = true;
 }
 
-const freqColor = (frequency) => `hsl(${frequency/canvasHeight * 255 * 2 + 100}, 100%, 50%)`;
+const freqColor = (frequency) => `hsl(${frequency/canvasHeight * 255 * 2 * divider + 100}, 100%, 50%)`;
 
 const changeVolume = (amount) => audio.volume = round(amount, 1);
 
@@ -108,8 +113,15 @@ function setSongTime (time) {
 }
 
 function followSongTime () {
-	const newValue = audio.currentTime / audio.duration * timerWidth ;
-	songTimerRange.value = newValue;
+	if (!seekingTime) {
+		const newValue = audio.currentTime / audio.duration * timerWidth ;
+		songTimerRange.value = newValue;
+	}
+}
+
+function setSongFollowingTime() {
+	const newTime = songTimerRange.value /timerWidth * audio.duration;
+	audio.currentTime = newTime;
 }
 
 function customizeSongRange () {

@@ -1,8 +1,8 @@
 let bufferLength, source, context, analyser, fArray;
 let canvasHeight, canvasWidth, canvas, ctx;
 let bars, bar_x, bar_width, wait = false, onlineMode = false;
-var playBtn, playList, nowPlaying, options, songNow, 
-	songTimerRange, timerWidth, onlineSongs;
+var playBtn, playList, nowPlaying, options, songNow, intensifies, 
+	songTimerRange, timerWidth, onlineSongs, seekingTime=false;
 
 //sample songs [use your own songs]
 let songArr = [];
@@ -13,6 +13,7 @@ let currSong = 0;
 //on startup, initialise the DOM object variable
 window.onload = async function () {
 	getSongArr();
+	intensifies = 0;
 	wait = true;												//make sure the user didn't clicked too fast before the initialisation
 	playBtn = document.getElementById("play"),					//The play button
 	playBtnText = playBtn.getElementsByTagName("i")[0],
@@ -51,8 +52,10 @@ function start (url) {
 		audio.crossOrigin = "anonymous";
 	
 		context = new (window.AudioContext || window.webkitAudioContext)();		//creating an audio context 
-		analyser = context.createAnalyser();									//creating a analyzer for the context
-		analyser.fftSize = 1024;												//setting the window size in samples
+		analyser = context.createAnalyser();								//creating a analyzer for the context
+		const size = window.screen.width > 900 ? 512 : 256
+		console.log(size);
+		analyser.fftSize = size;												//setting the window size in samples
 		source = context.createMediaElementSource(audio);						//creating a new MediaElementAudioSourceNode using our audio object
 		source.connect(analyser);												//using the node source we created just now, conect it with the analyzer
 		analyser.connect(context.destination);									//Then connect the analyzer with the context's destination
@@ -94,6 +97,7 @@ function playSong () {
 		window.cancelAnimationFrame(frameLooper)
 		changeSource(useFileSource());
 		audio.play();
+		changeCurrentTitle(currSong, false);
 		customizeSongRange(audio.duration);
 		frameLooper();
 	}
@@ -167,13 +171,19 @@ function playFromList () {
 	}, 1500);
 }
 
+const divider = window.screen.width < 1180? 2 : 1;
 function frameLooper(){
 	analyser.getByteFrequencyData(fArray);
 	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+	ctx.fillStyle = "rgba(255, 255, 255, " + (intensifies * 0.0000225 - 0.4) + ")";
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	intensifies = 0;
 	fArray.forEach((feq, index) => {
 		bar_x = index * bar_width;
-		const bar_height = feq/ 255 * canvasHeight/2 * 1.2;
-    	ctx.fillStyle = freqColor(bar_height)
+		const bar_height = feq/ 255 * canvasHeight/2 * 1.2 / divider;
+		ctx.fillStyle = freqColor(bar_height);
+		intensifies += feq;
 		ctx.fillRect(bar_x, canvasHeight - bar_height, bar_width, bar_height);
 	});
 	window.requestAnimationFrame(frameLooper);

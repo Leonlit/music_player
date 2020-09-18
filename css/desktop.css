@@ -1,166 +1,51 @@
-body {
-    background-color:black;
-    margin:0;
-    padding:0;
-    width:100vw;
-    height:100vh;
-    background: rgb(44,71,103);
-    background: radial-gradient(circle, rgba(44,71,103,1) 1%, rgba(46,46,112,1) 11%, 
-                rgba(61,61,150,1) 16%, rgba(41,41,99,1) 24%, rgba(19,18,37,1) 69%);
-}
+@media only screen and (min-width: 1180px) {
+    #controlBar {
+        width: 100vw;
+        height:30px;
+        padding: 10px 0px ;
+    }
 
-#analyser_render{
-    background-size: contain;
-    position: absolute;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    width:100vw;
-    height:100vh;
-    z-index: -1;
-    pointer-events: none;
-}
+    #analyser_render{
+        height: 100vh;
+        margin-bottom: 0;
+    }
 
-.websiteBlackTheme {
-    background-color: rgb(72, 72, 72);
-    color: white;
-}
+    #vol, #playlist, #nowPlaying, #options_bar {
+        margin-top:0;
+        margin-right: 0;
+        height:30px;
+        float:left;
+        margin-left: 2%;
+    }
 
-#controlBar {
-    width: 100vw;
-    margin:0;
-    padding: 10px 0px ;
-    background-color: rgb(46, 46, 46);
-}
+    #vol {
+        width: 10vw;
+        min-width: 150px;
+    }
 
-#vol, #playlist, #nowPlaying, #options_bar button {
-    height:30px;
-    float:left;
-    border-radius: 5px;
-    margin-left: 3%;
-    font-weight: 900;
-}
+    #playlist {
+        max-width: 300px;
+        width: 20vw;
+        float: left;
+        transform: translateX(0);
+    }
 
-#vol {
-    max-width: 250px;
-    min-width: 150px;
-}
+    #nowPlaying {
+        width:20vw;
+        max-width: 300px;
+        transform: translateX(0);
+        line-height: 2.0em;
+    }
 
-#playlist {
-    max-width: 300px;
-    min-width: 250px;
-    float: left;
-    transition: 0.3s;
-}
+    option {
+        font-size: 1.2em;
+    }
 
-#nowPlaying {
-    min-width: 200px;
-    max-width: 300px;
-    width:30vw;
-    line-height: 2.0em;
-    overflow: hidden;
-    text-align:center;
-    vertical-align: middle;
-    border:2px solid rgba(255, 255, 255, 0.596);
-}
+    #showMoreContainer::after {
+        left: 90%;
+    }
 
-#songNow {
-    -moz-animation: marquee 15s linear infinite;
-    -webkit-animation: marquee 15s linear infinite;
-    animation: marquee 15s linear infinite;
-}
-
-#options_bar {
-    display: inline-block;
-    width: 410px;
-    height: 30px;
-    z-index: 10;
-    margin-left: 3%;
-}
-
-#options_bar button {
-    margin-left: 1px;
-    width: 50px;
-    border:none;
-    transition: 0.3s;
-    padding-bottom:5px;
-    border: 3px solid transparent;
-}
-
-#options_bar button:focus {
-    outline: none;
-    box-shadow: none;
-}
-
-#options_bar button:hover {
-    border-left: 3px solid white;
-}
-
-.option {
-    cursor: pointer;
-    font-size: 1.0em;
-}
-
-option {
-    font-size: 1.2em;
-}
-
-#currDuration {
-    margin-top:-5px;
-    width:100vw;
-    margin: 0;
-    height:20px;
-}
-
-#showMoreContainer {
-    position: absolute;
-    margin-top: 10px;
-    right:5%;
-    font-size: 0.9em;
-    color:white;
-    visibility: hidden;
-}
-
-.openShowMore {
-    animation: fade-in-down 0.3s linear;
-}
-
-.closeShowMore {
-    animation: fade-out-up 0.3s linear;
-}
-
-#showMoreContainer div {
-    background-color: rgb(46, 46, 46);
-    border-radius: 5px;
-    padding: 3px;
-}
-
-#showMoreContainer div .fa {
-    margin-left: 5px;
-    cursor: pointer;
-}
-
-#showMoreContainer::after {
-    content: "";
-    position: absolute;
-    bottom: 100%;
-    left: 90%;
-    margin-left: -5px;
-    border-width: 10px;
-    border-style: solid;
-    border-color: transparent transparent white transparent;
-}
-
-.showMoreInputs {
-    border:none;
-    width:30vw;
-    height: 30px;
-    padding-left: 10px;
-    font-weight: 900;
-}
-
-#currDuration::-webkit-slider-thumb {
-    height:15px;
-    margin-top: -3px;
+    .showMoreInputs {
+        width:30vw;
+    }
 }

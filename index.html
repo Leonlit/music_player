@@ -2,10 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="css/mobile.css"/>
     <link rel="stylesheet" href="css/desktop.css"/>
     <link rel="stylesheet" href="css/custom.css"/>
     <link rel="stylesheet" href="css/animations.css"/>
+    
     <title>Audio equalizer - volume bar</title>
   </head>
   <body>
@@ -36,7 +39,7 @@
         <i title="Play From url" class="fa" onclick="playFromUrl()">&#xf061;</i>
       </div>
     </div>
-    <input type="range" id="currDuration" min="0.0" value="0.0" readonly>
+    <input type="range" onmouseover="seekingTime = true" onmouseout="seekingTime = false" onclick="setSongFollowingTime()" id="currDuration" min="0.0" value="0.0" readonly/>
   </body>
 </html>
 

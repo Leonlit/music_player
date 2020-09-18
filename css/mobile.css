@@ -1,0 +1,169 @@
+body {
+    background-color:black;
+    margin:0;
+    padding:0;
+    height:100vh;
+    background: rgb(44,71,103);
+    background: radial-gradient(circle, rgba(44,71,103,1) 1%, rgba(46,46,112,1) 11%, 
+                rgba(61,61,150,1) 16%, rgba(41,41,99,1) 24%, rgba(19,18,37,1) 69%);
+    background-size: cover;
+    background-repeat: no-repeat;
+                
+}
+
+#analyser_render{
+    margin-bottom: 1%;
+    background-size: contain;
+    position: absolute;
+    bottom:0;
+    width:100vw;
+    height:80vh;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.websiteBlackTheme {
+    background-color: rgb(72, 72, 72);
+    color: white;
+}
+
+#controlBar {
+    text-align: center;
+    margin:0;
+    background-color: rgb(46, 46, 46);
+}
+
+#vol, #playlist, #nowPlaying, #options_bar {
+    margin-top: 2%;
+    height:30px;
+    border-radius: 5px;
+    margin-right: 2%;
+    font-weight: 900;
+}
+
+#vol {
+    max-width: 250px;
+    min-width: 80vw;
+}
+
+#playlist {
+    width:80vw;
+    margin-left:50%;
+    transform: translateX(-50%);
+    max-width:400px;
+    min-width: 250px;
+    transition: 0.3s;
+}
+
+#nowPlaying {
+    margin-left:50%;
+    transform: translateX(-50%);
+    width:95vw;
+    max-width:400px;
+    line-height: 2.0em;
+    overflow: hidden;
+    text-align:center;
+    vertical-align: middle;
+    border:2px solid rgba(255, 255, 255, 0.596);
+}
+
+#songNow {
+    -moz-animation: marquee 15s linear infinite;
+    -webkit-animation: marquee 15s linear infinite;
+    animation: marquee 15s linear infinite;
+}
+
+#options_bar {
+    height: auto;
+}
+
+button {
+    padding-top: 1px;
+    margin-bottom: 5px;
+    font-weight: 900;
+    margin-left: 1%;
+    display: inline-block;
+    margin-left: 1px;
+    width: 50px;
+    border:none;
+    transition: 0.3s;
+    padding-bottom:5px;
+    border: 3px solid transparent;
+}
+
+button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+button:hover {
+    border-left: 3px solid white;
+}
+
+.option {
+    cursor: pointer;
+    font-size: 1.0em;
+}
+
+option {
+    font-size: 1.2em;
+}
+
+#currDuration {
+    margin-top:-5px;
+    width:100vw;
+    margin: 0;
+    height:20px;
+}
+
+#showMoreContainer {
+    position: absolute;
+    margin-top: 10px;
+    right:5%;
+    font-size: 0.9em;
+    color:white;
+    visibility: hidden;
+}
+
+.openShowMore {
+    animation: fade-in-down 0.3s linear;
+}
+
+.closeShowMore {
+    animation: fade-out-up 0.3s linear;
+}
+
+#showMoreContainer div {
+    background-color: rgb(46, 46, 46);
+    border-radius: 5px;
+    padding: 3px;
+}
+
+#showMoreContainer div .fa {
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+#showMoreContainer::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 30%;
+    margin-left: -5px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent white transparent;
+}
+
+.showMoreInputs {
+    border:none;
+    width:70vw;
+    height: 30px;
+    padding-left: 10px;
+    font-weight: 900;
+}
+
+#currDuration::-webkit-slider-thumb {
+    height:15px;
+    margin-top: -3px;
+}

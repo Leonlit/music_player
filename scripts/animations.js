@@ -1,6 +1,7 @@
 let isExtraOpening = false
 const extraContainer = document.getElementById("showMoreContainer");
 const showMoreBtn = document.getElementById("showMore").getElementsByTagName("i")[0];
+//animating the open and close of the extra feature section
 function showMore () {
 	if (isExtraOpening) {
         showMoreBtn.innerHTML = "&#xf191;";

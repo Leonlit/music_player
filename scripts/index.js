@@ -25,6 +25,8 @@ window.onload = async function () {
 	timerWidth = songTimerRange.offsetWidth;					//getting the width of the songTimerRange element
 }
 
+//setting up how the music player get the audio source.
+//Online or offline
 function useFileSource () {
 	if (onlineMode || onlineSongs) {
 		return `http://cors-anywhere.herokuapp.com/${songArr[currSong].link}`;
@@ -52,9 +54,8 @@ function start (url) {
 		audio.crossOrigin = "anonymous";
 	
 		context = new (window.AudioContext || window.webkitAudioContext)();		//creating an audio context 
-		analyser = context.createAnalyser();								//creating a analyzer for the context
-		const size = window.screen.width > 900 ? 512 : 256
-		console.log(size);
+		analyser = context.createAnalyser();									//creating a analyzer for the context
+		const size = window.screen.width > 900 ? 512 : 256						//determine which size to use for the frequencies discrete value
 		analyser.fftSize = size;												//setting the window size in samples
 		source = context.createMediaElementSource(audio);						//creating a new MediaElementAudioSourceNode using our audio object
 		source.connect(analyser);												//using the node source we created just now, conect it with the analyzer
@@ -75,7 +76,7 @@ function start (url) {
 			nextSong();
 			playSong();
 		});
-		
+		//also change song when playing the first song
 		changeCurrentTitle(currSong);											//change the title at the currently playing container
 		audio.play();															//play out the song
 		customizeSongRange(audio.duration);										//setting the max value for the range of the song
@@ -91,94 +92,142 @@ function playSong () {
 	if (audio.src === "") {
 		start();
 	}else{
-		playBtnText.innerHTML = "&#xf04c;";						//changing the stop text button into a pause text button
-		playBtn.onclick = pauseSong;					//pause the song
-		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-		window.cancelAnimationFrame(frameLooper)
-		changeSource(useFileSource());
-		audio.play();
+		playBtnText.innerHTML = "&#xf04c;";					//changing the stop text button into a pause text button
+		playBtn.onclick = pauseSong;						//pause the song
+		ctx.clearRect(0, 0, canvasWidth, canvasHeight);		
+		window.cancelAnimationFrame(frameLooper)			//canceling the frame looper
+		changeSource(useFileSource());						//change the source for the audio
+		audio.play();										//changing title of the song and playing the song
 		changeCurrentTitle(currSong, false);
-		customizeSongRange(audio.duration);
-		frameLooper();
+		customizeSongRange(audio.duration);					//As well as reconfigure the size of the range placeholder of the song
+		frameLooper();										//start baak the frame looper
 	}
 }
 
+//resetting the current time of the song to 0
 const restartSong = () => setSongTime(0);
 
+//Increasing the index of the song to be played by one
 function nextSong () {
+	//change the active option tag in the playlist to a new one
 	focusList(currSong, currSong + 1)
 	currSong = currSong + 1;
+	//if the value is equal to the array length (exceeded the array),
+	// loop back the index to the first element in the array (index 0)
 	if(currSong == songArr.length) {
 		currSong = 0;
 	}
 }
 
+//decresing the index of the song to be played by one
 function prevSong () {
+	//change the active option tag in the playlist to a new one
 	focusList(currSong, currSong - 1);
 	currSong = currSong - 1;
+	//if the value is less than 0, loop back the index to the last element 
+	//in the array
 	if(currSong < 0) {
 		currSong = songArr.length - 1;
 	}
 }
 
+//pause the current song
 function pauseSong () {
+	//if the system status is not waiting, proceed with pausing the song
 	if (!wait) {
 		audio.pause();
+		//change the title so that user know the song is now paused
 		changeCurrentTitle(currSong, true);
+		//changing the icon for the play button to a play icon
+		//and changing the triggered function when onclick event fired
 		playBtnText.innerHTML = "&#xf04b;";
 		playBtn.onclick = resumeSong;
 	}
 }
+
+//after pausing the song, user can resume the song
 function resumeSong () {
+	//but the system can't be at waiting status during this operation
 	if (!wait) {
 		audio.play();
+		//notify the user the song is currently playing
 		changeCurrentTitle(currSong, false);
+		//Changing the icon of the play button to a pause icon
+		//and of course changing the function triggered when onclick event is fired
 		playBtnText.innerHTML = "&#xf04c;";
 		playBtn.onclick = pauseSong;
 	}
 }
 
+//skipping forward the current song to the next song
 function skipSong () {
+	//make sure the system is not in waiting status
 	if (!wait) {
+		//pause the song first, then increase the index of the song by one
 		pauseSong();
 		nextSong();
+		//then set the system to be in waiting status
 		wait = true;
+		//after a delay of 1.5 second, play the song
 		setTimeout(() => {
 			playSong();
 		}, 1500);
 	}
 }
 
+//skipping the song to the previous song
 function backSong () {
 	if (!wait) {
+		//pause the song
 		pauseSong();
+		//change the song index decrease by one
 		prevSong();
+		//changing the system status to waiting stats
 		wait = true;
+		//play the song after 1.5 seconds 
 		setTimeout(() => {
 			playSong();
 		}, 1500);
 	}
 }
 
+//play song from the list (when clicked from the playlist)
 function playFromList () {
+	//changing the value from string to integer
 	const curr = parseInt(playList.value);
+	//change the active option's element in the playlist
 	focusList(currSong, curr);
+	//change the song index to the clicked elements index
 	currSong = curr;
+	//pausing the song as well as changing the system into waiting stats
 	pauseSong();
 	wait = true
+	//play the song after 1.5 seconds
 	setTimeout(() => {
 		playSong();
 	}, 1500);
 }
 
+//since in phone the width of the screen is smaller, we need to make 
+//the frequency bar to be smaller 
+//setting the divider base on the screen width
 const divider = window.screen.width < 1180? 2 : 1;
+//setting the multiplier so that we can make the flashing effects when 
+//there's a high notes being played. Smaller screen need higher frequency 
+//for the flash effect to happen because we've make their value halved.
+const multiplier = window.screen.width < 1180 ? 0.0000425 : 0.0000225;
+
 function frameLooper(){
+	//getting the frequency array of the song
 	analyser.getByteFrequencyData(fArray);
 	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-	const multiplier = window.screen.width < 1180 ? 0.0000425 : 0.0000225;
+
 	ctx.fillStyle = "rgba(255, 255, 255, " + (intensifies * multiplier - 0.4) + ")";
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	//resetting the value to zero after drawing it out
 	intensifies = 0;
+
+	//drawing the visualiser according to their height
 	fArray.forEach((feq, index) => {
 		bar_x = index * bar_width;
 		const bar_height = feq/ 255 * canvasHeight/2 * 1.2 / divider;
@@ -186,22 +235,30 @@ function frameLooper(){
 		intensifies += feq;
 		ctx.fillRect(bar_x, canvasHeight - bar_height, bar_width, bar_height);
 	});
+	//looping the frame drawing as well as the range bar for the current time of the song
 	window.requestAnimationFrame(frameLooper);
 	window.requestAnimationFrame(followSongTime);
 }
 
+//The music player could also play song's that's online using the extra feature provided.
 function playFromUrl () {
+	//change the system mode to play online songs directly from url
 	onlineSongs = true;
+	//gettingg the source for the song
 	const url = getUrl();
 	if (audio.src === "") {
+		//if the system has yet to be initialised, initialise the system
+		//but using the online source as the initial song
 		start(url);
 	}else if (url !== null){
-		pauseSong();
-		changeSource(url);
-		currSong -= 2;
-		changeCurrentTitle();
-		showMore();
-		setTimeout(() => {
+		pauseSong();			//pause the current song
+		changeSource(url);		//change the source for the audio
+		prevSong();				//change the current index song to the previous value
+		changeCurrentTitle();	//change the title also
+		showMore();				//hiding the extra feature section
+		//resetting the value of the song title.
+		document.getElementById("songTitle").value = "";
+		setTimeout(() => {		//play the song after a 1.5 seconds delay.
 			resumeSong();
 		}, 1500);
 	}

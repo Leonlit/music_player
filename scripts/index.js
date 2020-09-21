@@ -175,8 +175,8 @@ const divider = window.screen.width < 1180? 2 : 1;
 function frameLooper(){
 	analyser.getByteFrequencyData(fArray);
 	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-	ctx.fillStyle = "rgba(255, 255, 255, " + (intensifies * 0.0000225 - 0.4) + ")";
+	const multiplier = window.screen.width < 1180 ? 0.0000425 : 0.0000225;
+	ctx.fillStyle = "rgba(255, 255, 255, " + (intensifies * multiplier - 0.4) + ")";
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	intensifies = 0;
 	fArray.forEach((feq, index) => {

@@ -8,6 +8,17 @@ To setup the project, you'll first need to clone the project to your desired loc
 
 After all that, make sure you have ```lite-server``` installed locally or globally on your machine(since I using it to run the project). If not, just run ```npm install``` to install it locally in the project directory. Then lastly, run ```npm start``` to start up the server and a browser will then be opened up. That's all you need to do to start using the web music player.
 
+If you have a list of online songs that could be played directly, you can also make a playlist out of them by adding their titles and links into a file called online_songs.txt. Make sure to use put all of the data in JSON format and wrap everthing inside an array ([]). For example:
+
+```
+[
+    {"title" : "My_epic_song_name", link: "www.the_link_to_the_song.com/songs/My_epic_song_name.mp3"}
+    ...
+    ...
+    ...
+]
+```
+
 ## Contact
 
 If you have any question regarding the project, feel free to contact me.

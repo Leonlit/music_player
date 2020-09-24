@@ -124,12 +124,20 @@ option {
     visibility: hidden;
 }
 
-.openShowMore {
+.fadeInDown {
     animation: fade-in-down 0.3s linear;
 }
 
-.closeShowMore {
+.fadeOutUp {
     animation: fade-out-up 0.3s linear;
+}
+
+.fadeIn {
+    animation: fade-in0.3s linear;
+}
+
+.fadeOut {
+    animation: fade-out 0.3s linear;
 }
 
 #showMoreContainer div {
@@ -165,4 +173,58 @@ option {
 #currDuration::-webkit-slider-thumb {
     height:15px;
     margin-top: -3px;
+}
+
+#errorMsgContainer {
+    overflow-y: auto;
+    word-wrap: break-word;
+    visibility: hidden;
+    position: fixed;
+    padding: 2%;
+    top: 50%;
+    left: 50%;
+    width: 35vw;
+    max-width: 400px;
+    min-width:300px;
+    height: 35vh;
+    max-height: 300px;
+    min-height:200px;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 1px 3px 5px grey;
+}
+
+#errorMsgContainer:hover {
+    box-shadow: 1px 3px 5px rgb(182, 182, 182);
+}
+
+#errorMsgContainer > .fa {
+    position: absolute;
+    cursor: pointer;
+    right: 15px;
+    top:10px;
+    font-size:36px;
+}
+
+#errorMsgContainer > .fa:hover {
+    transform: scale(1.4);
+}
+
+#errorMsg {
+    margin-top: 50px;
+    font-weight: 900;
+    font-size: 20px;
+}
+
+#shader {
+    visibility: hidden;
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 4;
+    background-color: rgba(0, 0, 0, 0.5);
 }

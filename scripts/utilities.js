@@ -41,7 +41,6 @@ async function getSongArr () {
 		if (!onlineMode) {				//getting the String containing the sosngs from the function getsongs
 			songArr = arr.split(",");	//Splitting the values while using comma as the delimiter
 		}else {
-			//### generate errors message
 			songArr = arr;
 		}
 		generateList();
@@ -60,10 +59,17 @@ async function getSongs () {
 	//wait for the data retrieving to complete 
 	let result = await
 		fetch(filename)
-			.then(data=>data.text());
+			.then(response=> {
+				if (response.status >= 200 && response.status <= 299) {
+					return response.text();
+				}else {
+					throw new Error();
+				}
+			}).catch(err => {
+				showError(`File: ${filename} not found in directory!!!`);
+			});
 	//if the file contains nothing return null.
 	if (result == "") {
-		//### also show error message 
 		return null
 	}else {
 		if (onlineMode) {
@@ -101,8 +107,8 @@ const changeVolume = (amount) => audio.volume = round(amount, 1);
 function changeCurrentTitle (index=null, paused=false) {
 	let filename;
 	if (!onlineSongs && !onlineMode) {
-		//since the name also has the mp3 extension in it, we need to remove that extension
-		filename = songArr[index].replace(".mp3", "");
+		//since the name also has the mp3 or other extension in it, we need to remove that extension
+		filename = songArr[index].replace(/\.(?:wav|mp3|pcm|aiff|aac|ogg|wma|flac|alac)$/i, "");
 	}else {
 		//else just use the title from the getTitle() function
 		filename = getTitle();
@@ -176,9 +182,33 @@ function customizeSongRange () {
 	songTimerRange.setAttribute("max", `${timerWidth}`);
 }
 
+//setting up how the music player get the audio source.
+//Online or offline
+function getFileSource () {
+	let file;
+	if (onlineMode || onlineSongs) {
+		file = `http://cors-anywhere.herokuapp.com/${songArr[currSong].link}`;
+	}else {
+		file = `songs/${songArr[currSong]}`;	
+	}
+	return file;
+}
+
 //changing the audio source
-function changeSource (newSource) {
-	audio.src= newSource;
+async function changeSource (newSource) {
+	try {
+		const stats = await fileExists(newSource);
+		console.log(stats);
+		if (stats) {
+			audio.src= newSource;
+			return true;
+		}else {
+			throw new Error();
+		}
+	}catch {
+		showError(`Unable to play Song. Song's source not found for ${newSource}`);
+		return false;
+	}
 }
 
 //change mode from local to online mode

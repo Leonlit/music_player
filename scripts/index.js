@@ -1,14 +1,16 @@
-let bufferLength, source, context, analyser, fArray;
-let canvasHeight, canvasWidth, canvas, ctx;
-let bars, bar_x, bar_width, wait = false, onlineMode = false;
+var bufferLength, source, context, analyser, fArray;
+var canvasHeight, canvasWidth, canvas, ctx;
+var bars, bar_x, bar_width, wait = false, onlineMode = false;
 var playBtn, playList, nowPlaying, options, songNow, intensifies, 
-	songTimerRange, timerWidth, onlineSongs, seekingTime=false;
+	songTimerRange, timerWidth, onlineSongs, seekingTime = false;
 
-//sample songs [use your own songs]
-let songArr = [];
+//sample songs [use your own songs by putting the files in a folder]
+//called songs and then run node ./getFiles.js in your terminal at the 
+//project's root directory
+var songArr = [];
 
 var audio = new Audio();
-let currSong = 0;
+var currSong = 0;
 
 //on startup, initialise the DOM object variable
 window.onload = async function () {
@@ -25,68 +27,61 @@ window.onload = async function () {
 	timerWidth = songTimerRange.offsetWidth;					//getting the width of the songTimerRange element
 }
 
-//setting up how the music player get the audio source.
-//Online or offline
-function useFileSource () {
-	if (onlineMode || onlineSongs) {
-		return `http://cors-anywhere.herokuapp.com/${songArr[currSong].link}`;
-	}else {
-		return `songs/${songArr[currSong]}`
-	}
-}
-
 //when the play button is clicked
-function start (url) {
+async function start (url) {
 	//if the current status is not waiting
 	if (!wait) {
-		//changing the play button text to pause as well as changing the function
-		//to be triggered to trigger pauseSong on the next button click
-		playBtnText.innerHTML = "&#xf04c;";
-		playBtn.onclick = pauseSong;
 		let audioSource;
 		//specifying the source for the audio element
 		if (url === undefined) {
-			audioSource = useFileSource();
+			audioSource = getFileSource();
 		}else {
 			audioSource = url;
 		}
-		changeSource(audioSource);
-		audio.crossOrigin = "anonymous";
-	
-		context = new (window.AudioContext || window.webkitAudioContext)();		//creating an audio context 
-		analyser = context.createAnalyser();									//creating a analyzer for the context
-		const size = window.screen.width > 900 ? 512 : 256						//determine which size to use for the frequencies discrete value
-		analyser.fftSize = size;												//setting the window size in samples
-		source = context.createMediaElementSource(audio);						//creating a new MediaElementAudioSourceNode using our audio object
-		source.connect(analyser);												//using the node source we created just now, conect it with the analyzer
-		analyser.connect(context.destination);									//Then connect the analyzer with the context's destination
-		bufferLength = analyser.frequencyBinCount;								//getting the number of values that the program need to draw out
-		fArray = new Uint8Array(bufferLength);									//representing the array as a unsigned 8-bit integers
+		const stats = await changeSource(audioSource);
+		if (stats) {
+			//changing the play button text to pause as well as changing the function
+			//to be triggered to trigger pauseSong on the next button click
+			playBtnText.innerHTML = "&#xf04c;";
+			playBtn.onclick = pauseSong;
 
-		canvas = document.getElementById("analyser_render");					//getting the canvas
-		ctx = canvas.getContext('2d');											//getting the canvas context
-		resize();																//resizing the canvas to properly size the drawing location
-		canvasHeight = canvas.height;							
-		canvasWidth = canvas.width;
-		bar_width = canvasWidth / bufferLength
+			audio.crossOrigin = "anonymous";
+		
+			context = new (window.AudioContext || window.webkitAudioContext)();		//creating an audio context 
+			analyser = context.createAnalyser();									//creating a analyzer for the context
+			const size = window.screen.width > 900 ? 512 : 256						//determine which size to use for the frequencies discrete value
+			analyser.fftSize = size;												//setting the window size in samples
+			source = context.createMediaElementSource(audio);						//creating a new MediaElementAudioSourceNode using our audio object
+			source.connect(analyser);												//using the node source we created just now, conect it with the analyzer
+			analyser.connect(context.destination);									//Then connect the analyzer with the context's destination
+			bufferLength = analyser.frequencyBinCount;								//getting the number of values that the program need to draw out
+			fArray = new Uint8Array(bufferLength);									//representing the array as a unsigned 8-bit integers
 
-		//when a song is finished, go to the next song
-		audio.addEventListener("ended", function(){
-			onlineSongs = false;
-			nextSong();
-			playSong();
-		});
-		//also change song when playing the first song
-		changeCurrentTitle(currSong);											//change the title at the currently playing container
-		audio.play();															//play out the song
-		customizeSongRange(audio.duration);										//setting the max value for the range of the song
-		frameLooper();															//start the animation frame (looping)
+			canvas = document.getElementById("analyser_render");					//getting the canvas
+			ctx = canvas.getContext('2d');											//getting the canvas context
+			resize();																//resizing the canvas to properly size the drawing location
+			canvasHeight = canvas.height;							
+			canvasWidth = canvas.width;
+			bar_width = canvasWidth / bufferLength
+
+			//when a song is finished, go to the next song
+			audio.addEventListener("ended", function(){
+				onlineSongs = false;
+				nextSong();
+				playSong();
+			});
+			//also change song when playing the first song
+			changeCurrentTitle(currSong);											//change the title at the currently playing container
+			audio.play();															//play out the song
+			customizeSongRange(audio.duration);										//setting the max value for the range of the song
+			frameLooper();															//start the animation frame (looping)
+		}
 	}
 }
 
 
 //function for playing a song
-function playSong () {
+async function playSong () {
 	wait = false;
 	//if the source is empty call the start function (the system has not yet initialize some important values)
 	if (audio.src === "") {
@@ -96,11 +91,13 @@ function playSong () {
 		playBtn.onclick = pauseSong;						//pause the song
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);		
 		window.cancelAnimationFrame(frameLooper)			//canceling the frame looper
-		changeSource(useFileSource());						//change the source for the audio
-		audio.play();										//changing title of the song and playing the song
-		changeCurrentTitle(currSong, false);
-		customizeSongRange(audio.duration);					//As well as reconfigure the size of the range placeholder of the song
-		frameLooper();										//start baak the frame looper
+		const stats = await changeSource(getFileSource());		//change the source for the audio
+		if (stats) {
+			audio.play();										//changing title of the song and playing the song
+			changeCurrentTitle(currSong, false);
+			customizeSongRange(audio.duration);					//As well as reconfigure the size of the range placeholder of the song
+			frameLooper();										//start baak the frame looper
+		}
 	}
 }
 
@@ -241,7 +238,7 @@ function frameLooper(){
 }
 
 //The music player could also play song's that's online using the extra feature provided.
-function playFromUrl () {
+async function playFromUrl () {
 	//change the system mode to play online songs directly from url
 	onlineSongs = true;
 	//gettingg the source for the song
@@ -251,15 +248,17 @@ function playFromUrl () {
 		//but using the online source as the initial song
 		start(url);
 	}else if (url !== null){
-		pauseSong();			//pause the current song
-		changeSource(url);		//change the source for the audio
-		prevSong();				//change the current index song to the previous value
-		changeCurrentTitle();	//change the title also
-		showMore();				//hiding the extra feature section
-		//resetting the value of the song title.
-		document.getElementById("songTitle").value = "";
-		setTimeout(() => {		//play the song after a 1.5 seconds delay.
-			resumeSong();
-		}, 1500);
+		pauseSong();						//pause the current song
+		const stats = await changeSource(url);	//change the source for the audio
+		if (stat) {
+			prevSong();							//change the current index song to the previous value
+			changeCurrentTitle();				//change the title also
+			showMore();							//hiding the extra feature section
+			//resetting the value of the song title.
+			document.getElementById("songTitle").value = "";
+			setTimeout(() => {		//play the song after a 1.5 seconds delay.
+				resumeSong();
+			}, 1500);
+		}
 	}
 }

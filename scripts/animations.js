@@ -5,14 +5,14 @@ const showMoreBtn = document.getElementById("showMore").getElementsByTagName("i"
 function showMore () {
 	if (isExtraOpening) {
         showMoreBtn.innerHTML = "&#xf191;";
-        extraContainer.className = "closeShowMore";
+        extraContainer.className = "fadeOutUp";
         setTimeout(() => {
             extraContainer.style.visibility = "hidden";
         }, 300);
 		isExtraOpening = false;
 	}else {
         showMoreBtn.innerHTML = "&#xf150;";
-        extraContainer.className = "openShowMore";
+        extraContainer.className = "fadeInDown";
         extraContainer.style.visibility = "visible";
 		isExtraOpening = true;
 	}

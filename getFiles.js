@@ -1,5 +1,4 @@
 const fs = require("fs");
-const ffmetadata = require("ffmetadata");
 
 const dir = "songs/";
 const file = "./songs_name.txt";

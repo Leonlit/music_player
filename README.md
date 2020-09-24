@@ -25,11 +25,11 @@ If you have a list of online songs that could be played directly, you can also m
 
 ### Initial view of the app.
 
-![Initial view of the App](https://github.com/Leonlit/music_player/blob/master/img/snapshot - main.png?raw=true)
+![Initial view of the App](https://github.com/Leonlit/music_player/blob/master/img/snapshot%20-%20main.png?raw=true)
 
 ### When the song is playing.
 
-![View of the App when song playing](https://github.com/Leonlit/music_player/blob/master/img/snapshot - playing.png?raw=true)
+![View of the App when song playing](https://github.com/Leonlit/music_player/blob/master/img/snapshot%20-%20playing.png?raw=true)
 
 ## Contact
 

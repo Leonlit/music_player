@@ -33,9 +33,4 @@ If you have a list of online songs that could be played directly, you can also m
 
 ## Contact
 
-If you have any question regarding the project, feel free to contact me.
-
-### [leonlit](https://github.com/Leonlit) :
-
- - [twitter](https://twitter.com/leonlit)
- - [email](leonlit123@gmail.com)
+If you have any question regarding the project, feel free to open an issue.

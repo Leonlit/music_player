@@ -9,16 +9,7 @@ function generateList () {
 	//generating the elements base on the array of element 
 	songArr.forEach((element, index) => {
 		const option = document.createElement("option");
-		let text;
-		//if the music player is not set to play songs from a list of online songs
-		//remove the mp3 extension from the name of the file (does not apply to original songArr values)
-		if (!onlineMode) {
-			text = document.createTextNode(element.split(".").slice(0, element.length - 1).join("."));
-		}else {
-			//if the system is in onlineMode, that means that there's a online-songs.txt file
-			//in the system
-			text = document.createTextNode(element.title);
-		}
+		let text = document.createTextNode(element.title);
 		//appending the text to the option element
 		option.appendChild(text);
 		//as well as setting the value of the element with the index accordingly
@@ -37,12 +28,8 @@ function generateList () {
 async function getSongArr () {
 	//getting the arrays of songs
 	const arr = await getSongs();
-	if (arr !== null) {
-		if (!onlineMode) {				//getting the String containing the sosngs from the function getsongs
-			songArr = arr.split(",");	//Splitting the values while using comma as the delimiter
-		}else {
-			songArr = arr;
-		}
+	if (arr !== null) {				//getting the String containing the sosngs from the function getsongs
+		songArr = arr;
 		generateList();
 	}
 }
@@ -71,14 +58,8 @@ async function getSongs () {
 	//if the file contains nothing return null.
 	if (result == "") {
 		return null
-	}else {
-		if (onlineMode) {
-			//if its not empty and the system is in onlineMode, parse the song name as 
-			//JSON to get the link and title of the songs
-			result = JSON.parse(result);
-		}
 	}
-	return result;
+	return JSON.parse(result);
 }
 
 //change focus of the playlist active element
@@ -105,12 +86,11 @@ function changeCurrentTitle (index=null, paused=false) {
 	let filename;
 	if (!onlineSongs && !onlineMode) {
 		//since the name also has the mp3 or other extension in it, we need to remove that extension
-		filename = songArr[index].replace(/\.(?:wav|mp3|pcm|aiff|aac|ogg|wma|flac|alac)$/i, "");
+		filename = songArr[index].title;
 	}else {
 		//else just use the title from the getTitle() function
 		filename = getTitle();
 	}
-	console.log(filename);
 	songNow.style.width = `${filename.length * 10}px`
 	//message show when the song is playing
 	if (!paused) {
@@ -188,7 +168,7 @@ function getFileSource () {
 	if (onlineMode || onlineSongs) {
 		file = `http://cors-anywhere.herokuapp.com/${songArr[currSong].link}`;
 	}else {
-		file = `songs/${songArr[currSong]}`;	
+		file = `songs/${songArr[currSong].source}`;	
 	}
 	return file;
 }
@@ -230,4 +210,17 @@ async function changeMode () {
 	focusList(null, currSong)
 	changeCurrentTitle(currSong, false);
 	playSong();
+}
+
+
+function configureBackground() {
+	const body = document.getElementsByTagName("body")[0];
+	body.style.backgroundImage = `url(${songArr[currSong].bgImg})`;
+}
+
+
+function attachColourStop (grd) {
+	grd.addColorStop(0, songArr[currSong].colour.firstStop);
+	grd.addColorStop(1, songArr[currSong].colour.secondStop);
+	return grd;
 }

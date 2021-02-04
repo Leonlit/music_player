@@ -1,16 +1,16 @@
 var bufferLength, source, context, analyser, fArray;
 var canvasHeight, canvasWidth, canvas, ctx;
 var bars, bar_x, bar_width, wait = false, onlineMode = false;
-var playBtn, playList, nowPlaying, options, songNow, intensifies, 
+var playBtn, playList, options, songNow, intensifies, 
 	songTimerRange, timerWidth, onlineSongs, seekingTime = false;
 
 //sample songs [use your own songs by putting the files in a folder]
 //called songs and then run node ./getFiles.js in your terminal at the 
 //project's root directory
-var songArr = [];
+let songArr = [];
 
-var audio = new Audio();
-var currSong = 0;
+let audio = new Audio();
+let currSong = 0;
 
 //on startup, initialise the DOM object variable
 window.onload = async function () {
@@ -20,7 +20,6 @@ window.onload = async function () {
 	playBtn = document.getElementById("play"),					//The play button
 	playBtnText = playBtn.getElementsByTagName("i")[0],
 	playList = document.getElementById("playlist");				//the playlist container
-	nowPlaying = document.getElementById("nowPlaying");			//the now playing container
 	options = playList.getElementsByTagName("option");			//The options tag inside the playlist container
 	songNow = document.getElementById("songNow");				//the song name container (the one that keeps on floating to the left)
 	songTimerRange = document.getElementById("currDuration");	//The input type range for the current time of the song (Following the range width)
@@ -72,6 +71,7 @@ async function start (url) {
 			});
 			//also change song when playing the first song
 			changeCurrentTitle(currSong);											//change the title at the currently playing container
+			configureBackground();
 			audio.play();															//play out the song
 			customizeSongRange(audio.duration);										//setting the max value for the range of the song
 			frameLooper();															//start the animation frame (looping)
@@ -87,6 +87,7 @@ async function playSong () {
 	if (audio.src === "") {
 		start();
 	}else{
+		configureBackground();
 		playBtnText.innerHTML = "&#xf04c;";					//changing the stop text button into a pause text button
 		playBtn.onclick = pauseSong;						//pause the song
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);		
@@ -229,9 +230,8 @@ function frameLooper(){
 		bar_x = index * bar_width;
 		const bar_height = feq;
 		// Create gradient
-		const grd = ctx.createLinearGradient(bar_x, canvasHeight - bar_height, bar_x + bar_width, canvasHeight);
-		grd.addColorStop(0, "red");
-		grd.addColorStop(1, "#7a0000");
+		let grd = ctx.createLinearGradient(bar_x, canvasHeight - bar_height, bar_x + bar_width, canvasHeight);
+		grd = attachColourStop(grd);
 		ctx.fillStyle = grd;
 		intensifies += feq;
 		ctx.fillRect(bar_x, canvasHeight - bar_height, bar_width, bar_height);

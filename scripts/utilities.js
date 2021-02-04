@@ -97,9 +97,6 @@ function focusList (from, to) {
 	}
 }
 
-//generating color for the frequency
-const freqColor = (frequency) => `hsl(${frequency/canvasHeight * 255 * 2 * divider + 100}, 100%, 50%)`;
-
 //changing the volume for the song
 const changeVolume = (amount) => audio.volume = round(amount, 1);
 
@@ -113,6 +110,8 @@ function changeCurrentTitle (index=null, paused=false) {
 		//else just use the title from the getTitle() function
 		filename = getTitle();
 	}
+	console.log(filename);
+	songNow.style.width = `${filename.length * 10}px`
 	//message show when the song is playing
 	if (!paused) {
 		songNow.innerHTML = `Now Playing ---> ${filename}`;

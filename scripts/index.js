@@ -49,7 +49,7 @@ async function start (url) {
 		
 			context = new (window.AudioContext || window.webkitAudioContext)();		//creating an audio context 
 			analyser = context.createAnalyser();									//creating a analyzer for the context
-			const size = window.screen.width > 900 ? 512 : 256						//determine which size to use for the frequencies discrete value
+			const size = window.screen.width > 900 ? 256 : 128						//determine which size to use for the frequencies discrete value
 			analyser.fftSize = size;												//setting the window size in samples
 			source = context.createMediaElementSource(audio);						//creating a new MediaElementAudioSourceNode using our audio object
 			source.connect(analyser);												//using the node source we created just now, conect it with the analyzer
@@ -219,7 +219,7 @@ function frameLooper(){
 	analyser.getByteFrequencyData(fArray);
 	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-	ctx.fillStyle = "rgba(255, 255, 255, " + (intensifies * multiplier - 0.4) + ")";
+	ctx.fillStyle = "rgba(255, 255, 255, " + (intensifies * multiplier - 0.3) + ")";
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	//resetting the value to zero after drawing it out
 	intensifies = 0;
@@ -227,8 +227,12 @@ function frameLooper(){
 	//drawing the visualiser according to their height
 	fArray.forEach((feq, index) => {
 		bar_x = index * bar_width;
-		const bar_height = feq/ 255 * canvasHeight/2 * 1.2 / divider;
-		ctx.fillStyle = freqColor(bar_height);
+		const bar_height = feq;
+		// Create gradient
+		const grd = ctx.createLinearGradient(bar_x, canvasHeight - bar_height, bar_x + bar_width, canvasHeight);
+		grd.addColorStop(0, "red");
+		grd.addColorStop(1, "#7a0000");
+		ctx.fillStyle = grd;
 		intensifies += feq;
 		ctx.fillRect(bar_x, canvasHeight - bar_height, bar_width, bar_height);
 	});

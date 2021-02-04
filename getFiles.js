@@ -7,7 +7,7 @@ const file = "./songs_name.txt";
 fs.readdir(dir, (err, files)=> {
     if (err) throw err;
     else {
-        saveFilesName(files);
+        saveFilesName(files.toString());
     }
 })
 

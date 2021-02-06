@@ -91,7 +91,7 @@ function changeCurrentTitle (index=null, paused=false) {
 		//else just use the title from the getTitle() function
 		filename = getTitle();
 	}
-	songNow.style.width = `${filename.length * 10}px`
+	songNow.style.width = `${filename.length * 12}px`
 	//message show when the song is playing
 	if (!paused) {
 		songNow.innerHTML = `Now Playing ---> ${filename}`;
@@ -214,10 +214,18 @@ async function changeMode () {
 
 
 function configureBackground() {
-	const body = document.getElementsByTagName("body")[0];
-	body.style.backgroundImage = `url(${songArr[currSong].bgImg})`;
-}
+	const bgImageCont = document.getElementById("bgImageContainer");
+    let clone = bgImageCont.cloneNode(true);
+	bgImageCont.parentNode.replaceChild(clone, bgImageCont);
 
+	clone.classList = "fadeOut";
+	clone.addEventListener("animationend", ()=>{
+		clone.classList = "fadeIn";
+		clone.addEventListener("animationstart", ()=>{
+			clone.style.backgroundImage = `url(${songArr[currSong].bgImg})`;
+		}, false);
+	}, false);
+}
 
 function attachColourStop (grd) {
 	grd.addColorStop(0, songArr[currSong].colour.firstStop);

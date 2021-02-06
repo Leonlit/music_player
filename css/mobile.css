@@ -4,12 +4,18 @@ body {
     padding:0;
     height:100vh;
     width:100vw;
-    background: rgb(44,71,103);
-    background: radial-gradient(circle, rgba(44,71,103,1) 1%, rgba(46,46,112,1) 11%, 
-                rgba(61,61,150,1) 16%, rgba(41,41,99,1) 24%, rgba(19,18,37,1) 69%);
+    background: black;
     background-size: cover;
     background-repeat: no-repeat;
-                
+}
+
+#bgImageContainer {
+    z-index:0;
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    position: fixed;
 }
 
 #analyser_render{
@@ -17,7 +23,7 @@ body {
     bottom:0;
     width:100vw;
     height:80vh;
-    z-index: -1;
+    z-index: 1;
     pointer-events: none;
 }
 
@@ -27,13 +33,16 @@ body {
 }
 
 #controlBar {
+    z-index:2;
     padding-top: 1%;
     text-align: center;
     margin:0;
     background-color: rgb(46, 46, 46);
+    position: relative;
 }
 
 #vol, #playlist, #nowPlaying, #options_bar {
+    position: relative;
     margin-top: 2vw;
     height:30px;
     border-radius: 5px;
@@ -109,6 +118,7 @@ option {
 }
 
 #currDuration {
+    position: relative;
     margin-top:-5px;
     width:100vw;
     margin: 0;
@@ -133,7 +143,7 @@ option {
 }
 
 .fadeIn {
-    animation: fade-in0.3s linear;
+    animation: fade-in 0.3s linear;
 }
 
 .fadeOut {

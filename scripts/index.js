@@ -70,7 +70,7 @@ async function start (url) {
 				playSong();
 			});
 			//also change song when playing the first song
-			changeCurrentTitle(currSong);											//change the title at the currently playing container
+			changeCurrentTitle(currSong, false);											//change the title at the currently playing container
 			configureBackground();
 			audio.play();															//play out the song
 			customizeSongRange(audio.duration);										//setting the max value for the range of the song

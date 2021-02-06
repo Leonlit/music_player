@@ -219,7 +219,7 @@ function frameLooper(){
 	//getting the frequency array of the song
 	analyser.getByteFrequencyData(fArray);
 	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
+	animatingBgImg(intensifies * multiplier);
 	ctx.fillStyle = "rgba(255, 255, 255, " + (intensifies * multiplier - 0.3) + ")";
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	//resetting the value to zero after drawing it out

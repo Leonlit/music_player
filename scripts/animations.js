@@ -17,3 +17,9 @@ function showMore () {
 		isExtraOpening = true;
 	}
 }
+
+function animatingBgImg (intesity) {
+	const bgImageCont = document.getElementById("bgImageContainer");
+    bgImageCont.style.transform = `scale(${intesity+ 0.8})`;
+    
+}

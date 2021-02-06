@@ -91,7 +91,7 @@ function changeCurrentTitle (index=null, paused=false) {
 		//else just use the title from the getTitle() function
 		filename = getTitle();
 	}
-	songNow.style.width = `${filename.length * 12}px`
+	songNow.style.width = `${filename.length * 14}px`
 	//message show when the song is playing
 	if (!paused) {
 		songNow.innerHTML = `Now Playing ---> ${filename}`;

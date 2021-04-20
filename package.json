@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "get-files": "node ./getFiles.js",
     "start": "npm run lite",
-    "lite": "lite-server"
+    "lite": "lite-server --baseDir='public'"
   },
   "repository": {
     "type": "git",
